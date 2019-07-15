@@ -1,0 +1,13 @@
+*~
+*\#*
+
+# Python project
+*.egg-info
+*.pyc
+/dist/
+__pycache__
+
+*tmp*
+*.ipynb_checkpoints
+
+docs/www

@@ -1,0 +1,10 @@
+site_name: Graph-Sturctured Sum-Product Networks
+
+nav:
+  - Introduction: index.md
+  - Documentation: docs.md
+theme:
+  name: readthedocs
+  highlightjs: true
+extra_css: [extra.css]  
+site_dir: www/site

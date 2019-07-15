@@ -1,0 +1,168 @@
+* GraphSPN development
+
+** Tasks [2/4]
+
+   - [X] Generic graph class [2/2]
+     - [X] Implementation
+     - [X] Unit testing
+   - [X] SPN [2/2]
+     - [X] Template SPN
+       - [X] Templates
+         - [X] Unit testing
+           - [X] Graph partition by node templates
+           - [X] Graph partition by edge relation templates
+       - [X] Template SPN
+         - [X] Unit testing
+           - [X] SPN training
+           - [X] SPN inference
+     - [X] Instance SPN [2/2]
+       - [X] Duplication
+         - [X] Unit testing
+       - [X] Marginal inference
+         - [X] Unit testing
+         - [X] Correctness testing
+         - [X] Efficiency testing
+   - [-] Experiments [2/4]
+     - [X] Get topological map dataset working
+     - [X] Replicate AAAI 2018 results
+     - [ ] +Replicate IROS 2019 results+
+     - [ ] +One or two more datasets in different domains+
+   - [ ] Clean up and documentation [0/2]
+     - [ ] Documentation
+     - [ ] Clean up
+
+
+** Spec
+*** Graph implementation
+    Defined a Graph to be a set of edges, a child class of EdgeNodeSet. An
+    EdgeNodeSet is just a set of nodes and edges, with no rules whatsoever. For
+    an EdgeNodeSet to become a Graph, as implemented in `to_graph` function, the
+    nodes of `edges` must also be included in `nodes`. There is a child class of
+    Graph, the UnusedGraph, which is not intended to be instantiated by the
+    user, and only used as intermediate objects during the partitioning. The
+    unique thing about UnusedGraph is its `_partition_setup()` function, which
+    only returns nodes and edges that are marked `unused`.
+
+    The most important functions in a Graph is the `partition_by_templates`
+    function, which depends on `template` function. This is implemented
+    according to Algorithm 2 in [Zheng et al. AAAI'18 ]. Essentially
+
+
+#+BEGIN_SRC python
+partition_by_template(G, templates):
+    G' = G   # self
+    D = {}
+    for T in templates:
+        G_super, G_unused = partition(G', T)
+        G' = G_unused
+        D[T] = G_super
+    return D
+
+
+partition(G, T):
+    E_super, V_super = {}
+    E_avail, E_used, V_avail, V_used = prep(G)
+    while |E_avail| > 0:
+        e = sample(E_avail)
+        n1, n2 = e.nodes
+        if n1 in V_used and n2 in V_used:
+            if |T.V| > 0:
+                E_avail.remove(e)  # this edge is not useful for matching T
+
+        enset = T.match(n1, e, V_used, E_used)  # T is edge template. Attempt to match
+        if |enset| > 0:
+            E_avail = E_avail / enset.edges
+            E_used = E_used U enset.edges
+            V_avail = V_avail / enset.edges
+            V_used = V_used U enset.edges
+
+            v_super = SuperNode(enset)  # a supernode with underlying EdgeNodeSet `enset`
+            make_connections_and_edges(v_super, V_super, E_super)
+    G_super = Graph(E_super)
+    V_unused = G.V / V_used
+    E_unused = G.E / E_used
+    G_unused = EdgeNodeSet(E_unused, V_unused).to_unused_graph()
+    return G_super, G_unused
+
+
+
+make_connections_and_edges(v_super, V_super, E_super):
+   enset = v_super.enset
+   for v in enset.nodes:
+       : check neighbors. If neighbor belongs to a super node, connect the two.
+   for e in enset.edges:
+       : check edges outgoing from both ends. If an edge belong to a super
+       : node, connect the two.
+#+END_SRC
+
+*** Template implementation
+    A template is a connected graph of any structure. Thus, for
+    generalizability, we endow the implementation of template matching to the
+    template classes themselves. There is an abstract class Template. Right now
+    we have NodeTemplate which is the parent class of SingletonTemplate,
+    PairTemplate, ThreeNodeTemplate and StarTemplate for 1, 2, 3, 5 nodes
+    respectively. We also have EdgeRelTemplate, which can contain both edge and
+    node data, with children ThreeRelTemplate, SingleRelTemplate, RelTemplate,
+    SingleTemplate for (3,2), (1,1), (0,1), (1,0) (#nodes, #edges),
+    respectively.
+    
+*** Marginal inference
+
+#+BEGIN_QUOTE
+Marginal inference is the task of inferring the probability of one variable
+taking a particular value. [[http://deepdive.stanford.edu/inference][Source]]
+#+END_QUOTE
+
+    After a template SPN is trained, there are a few things you can do with
+    it. Before expanding, the template SPN models P(Y). So you could compute
+    P(y) for a given configuration y. Thus, P(y) is the marginal inference of
+    Y=y.
+
+    Once the SPN is expanded, it models P(X,Y). To compute the marginal inference
+    P(y|x), we apply the definition of joint probability and have
+
+    P(y|x) = P(x,y) / P(x)
+
+    Because of our expanded SPN's structure, if we set all indicators of Y to be
+    1, it is equivalent as summing out Y, leaving us with P(x). This is how we
+    can compute P(y|x).
+
+
+*** MPE Inference
+
+#+BEGIN_QUOTE
+The most probable explanation or MPE is a plausible explanation for the observed
+findings.
+#+END_QUOTE
+
+    Computing the MPE can be expressed as:
+
+    y = argmax_y P(Y)
+
+    or, if we have local evidence x,
+
+    y = argmax_y P(Y|x)
+
+    MPE is NP-complete. Sum-Product networks cannot fundamentally escape this
+    fact. Since there are likely many variables, enumerating all of their possible
+    values is not tractable. Instead, we compute, for each latent variable i,
+
+    yi = argmax_{yi} P(Yi | x)
+
+    Because we assume that the variables Y1, ... YN are related through a graph
+    structure, the observation x captures such relation in some sense, and thus we
+    can infer the MPE of each Yi given such observation. This MPE inference is
+    exact.
+
+    We do not explictly implement MPE inference. However, our implementation of
+    marginal inference allows returning the full marginal distribution of P(Y) or
+    P(Y|X), which can be used to compute MPE by the user.
+
+
+*** Template SPN duplication
+
+   I have implemented my own duplication code and I will not do it again, even
+   though the most recent libspn does not support my code (perhaps due to some
+   bug).  I will provide the version of libspn that works for me in a docker or
+   some other form.
+

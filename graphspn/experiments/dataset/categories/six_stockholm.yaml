@@ -1,0 +1,37 @@
+# 1PO and 2PO combined to both mean office.
+{
+    'FW': {
+        # DW = 0; CR = 1; 1PO = 2; 2PO = 3; UN = 4
+        'OC': -1,  # occluded
+        'DW': 0,
+        'CR': 1,
+        '1PO': 2,
+        '2PO': 2,
+        'MPO': 2,
+        'PRO': 2,
+        'PT' : 3,
+        'BA' : 4,
+        'AT' : 5,
+        'UN': 6
+    },
+    'BW': {
+       -1: 'OC',
+        0: 'DW',
+        1: 'CR',
+        2: '1PO',
+        3: 'PT',
+        4: 'BA',
+        5: 'AT',
+        6: 'UN'
+          },
+    'CL': {
+       -1: '#000000',
+        0: '#00FFFF', # cyan
+        1: '#FF0000',
+        2: '#0000FF',
+        3: '#00FF00', # dark-green
+        4: '#266614', # pink
+        5: '#bee87f', # green-yellow
+        7: '#FFFFFF',
+    }
+}

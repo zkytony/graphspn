@@ -1,0 +1,57 @@
+{
+    'FW': {
+        'OC': -1,
+        'DW': 0,   #               (DW)
+        'CR': 1,   # corridor      (CR)
+        'AT': 1,   # anteroom      (CR)
+        'ST': 1,   # stairs        (CR)
+        'EV': 1,   # elevator      (CR)
+        '1PO': 2,  #               (1PO)
+        '2PO': 3,  #               (2PO)
+        'PRO': 3,  #               (2PO)
+        'MPO': 4,  #               (LO)
+        'LO': 4,   # large office  (LO)
+        'LAB': 5,  # --lab---LAB-------
+        'RL': 5,   # robot lab     (LAB)
+        'LR': 5,   # living room   (LAB)
+        'TR': 5,   # terminal room (LAB)
+        'BA': 6,   # bathroom      (BA)
+        'KT': 7,   # kitchen       (KT)
+        'MR': 8,   # meeting room  (MR)
+        'LMR': 8,  # lg meeting rm (MR)
+        'CF': 8,   # conference rm (MR)
+        'UT': 9,   # --utility-UT-----
+        'WS': 9,   # workshop      (UT)
+        'PT': 9,   # printer room  (UT)
+        'PA': 9,   # -same as PT-  (UT)
+        'UN': 10
+    },
+    'BW': {
+            -1: 'OC',
+        0: 'DW',
+        1: 'CR',
+        2: '1PO',
+        3: '2PO',
+        4: 'LO',
+        5: 'LAB',
+        6: 'BA',
+        7: 'KT',
+        8: 'MR',
+        9: 'UT',  # utility
+        10: 'UN'
+    },
+    'CL': {
+            -1: '#000000', # OC
+        0: '#f6f23d',
+        1: '#f08055',
+        2: '#40d9ff',
+        3: '#48ff80',
+        4: '#59be3c',
+        5: '#f2b6c6', 
+        6: '#7bcf99',
+        7: '#d99188',
+        8: '#f2e1ea',
+        9: '#cf22ef',
+        10: '#FFFFFF' # UN
+    }
+}

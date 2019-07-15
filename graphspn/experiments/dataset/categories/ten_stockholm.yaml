@@ -1,0 +1,55 @@
+{
+    'FW': {
+        'OC': -1,
+        'DW': 0,   #               (DW)
+        'CR': 1,   # corridor      (CR)
+        'OF': 2,   # office        (OF)
+        '1PO': 2,  #               (OF)
+        '2PO': 2,  #               (OF)
+        'PRO': 2,  #               (OF)
+        'MPO': 3,  #               (LO)
+        'LO': 3,   #               (LO)
+        'LAB': 4,  # --lab---LAB-------
+        'RL': 4,   # robot lab     (LAB)
+        'LR': 4,   # living room   (LAB)
+        'BA': 5,   # bathroom      (BA)
+        'AT': 6,   # anteroom      (AT)
+        'KT': 7,   # kitchen       (KT)
+        'MR': 8,   # meeting room  (MR)
+        'LMR': 8,  # lg meeting rm (MR)
+        'CF': 8,   # conference rm (MR)
+        'UT': 9,   # --utility-UT-----
+        'WS': 9,   # workshop      (UT)
+        'PT': 9,   # printer room  (UT)
+        'UN': 10
+    },
+    'CL': {
+            -1: '#000000', # OC
+        0: '#f6f23d',
+        1: '#f08055',
+        2: '#40d9ff',
+        3: '#48ff80',
+        4: '#59be3c',
+        5: '#f2b6c6', 
+        6: '#7bcf99',
+        7: '#d99188',
+        8: '#f2e1ea',
+        9: '#cf22ef',
+        10: '#FFFFFF' # UN
+    },
+    'BW': {
+        -1: 'OC',
+        0: 'DW',
+        1: 'CR',
+        2: 'OF',  # office
+        3: 'LO',
+        4: 'LAB',
+        5: 'BA',
+        6: 'AT',
+        7: 'KT',
+        8: 'MR',
+        9: 'UT',  # utility
+        10: 'UN'
+    },
+    'regular_swaps': [ ['LAB', 'KT'], ['LAB', 'MR'], ['KT','MR'], ['BA', 'AT']]
+}
