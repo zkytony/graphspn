@@ -1,3 +1,6 @@
+<img src='https://user-images.githubusercontent.com/7720184/167313413-b0f96a13-1d8f-4a9c-81ee-5aaef29f8c96.png' width='400px'>
+
+
 # Graph-Structured Sum-Product Networks (GraphSPN)
 
 Refer to [docs](http://kaiyuzheng.me/documents/sites/graphspn).
